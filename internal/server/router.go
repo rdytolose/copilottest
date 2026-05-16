@@ -2,18 +2,16 @@ package server
 
 import (
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 func (s *Server) Router() http.Handler {
-	r := mux.NewRouter()
+	mux := http.NewServeMux()
 
-	r.HandleFunc("/health", s.handleHealth).Methods("GET")
-	r.HandleFunc("/api/analyze/pr", s.handleAnalyzePR).Methods("POST")
-	r.HandleFunc("/webhook/github", s.handleGitHubWebhook).Methods("POST")
+	mux.HandleFunc("/health", s.handleHealth)
+	mux.HandleFunc("/api/analyze/pr", s.handleAnalyzePR)
+	mux.HandleFunc("/webhook/github", s.handleGitHubWebhook)
 
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./web")))
+	mux.Handle("/", http.FileServer(http.Dir("./web")))
 
-	return r
+	return mux
 }
