@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Devin PR Review Router</title>
+</head>
+<body>
+  <h1>Devin PR Review</h1>
+  <p>Введите repo и PR номер — получите ссылку на Devin-сессию.</p>
+
+  <form id="f">
+    <input id="repo" placeholder="owner/repo" />
+    <input id="pr" placeholder="PR number" type="number" />
+    <button>Analyze</button>
+  </form>
+
+  <pre id="out"></pre>
+
+  <script>
+    document.getElementById("f").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const repo = document.getElementById("repo").value;
+      const pr = parseInt(document.getElementById("pr").value, 10);
+      const res = await fetch("/api/analyze/pr", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({repo, pr_number: pr})
+      });
+      const data = await res.json();
+      document.getElementById("out").textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
