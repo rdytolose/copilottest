@@ -5,7 +5,7 @@
 ## Требования
 - Go 1.22+
 - 4 Devin API ключа (v1)
-
+1
 ## Настройка
 ```bash
 export DEVIN_API_KEYS="apk_1,apk_2,apk_3,apk_4"
